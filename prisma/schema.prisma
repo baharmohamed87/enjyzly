@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider            = "prisma-client"
+  output              = "../generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "ts"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER 
+  SERVICEPROV
+  ADMIN
+
+}
+
+enum Category {
+  HOME
+  BUSINESS
+
+}
+
+enum Status {
+  PENDING
+  ACCEPTED
+  PROGRESSING
+  REJECTED
+  DONE
+  CANCELLED
+}
+
+
+
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String 
+  hashpassword String  
+  email        String   @unique
+  role         Role     @default(USER)  
+
+  provider    Provider? 
+  requests    Request[]
+
+}
+
+
+
+model Service {
+  id                Int       @id @default(autoincrement())
+  name              String
+  category          Category
+  requests          Request[]
+
+  providerServices  ProviderServices[]
+}
+
+
+
+model Provider {
+  id                 Int                @id @default(autoincrement())
+  userId            Int                 @unique
+  joinedAt          DateTime            @default(now())
+  offers            Offer[]
+  providerServices  ProviderServices[]
+
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+}
+
+
+
+model ProviderServices {
+  id           Int      @id @default(autoincrement())
+  providerId   Int
+  serviceId    Int
+
+  provider     Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  service      Service  @relation(fields: [serviceId],  references: [id], onDelete: Cascade)
+
+  @@unique([providerId, serviceId])
+}
+
+
+
+model Request {
+  id          Int        @id @default(autoincrement())
+  userId      Int
+  serviceId   Int
+  description String
+  createdAt   DateTime   @default(now()) 
+  status      Status     @default(PENDING)
+  offer             Offer[]
+
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  service     Service    @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+}
+
+
+
+model Offer {
+  id          Int        @id @default(autoincrement())
+  providerId  Int
+  createdAt   DateTime   @default(now())
+  requestId   Int
+  price       Int 
+
+  request     Request   @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  provider    Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+}

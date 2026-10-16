@@ -1,0 +1,37 @@
+{
+  "type": "module",
+  "name": "enjyzly",
+  "version": "1.0.0",
+  "description": "a platform for connecting service providers with costumers",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bishamohammed8755-sketch/enjyzly.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bishamohammed8755-sketch/enjyzly/issues"
+  },
+  "homepage": "https://github.com/bishamohammed8755-sketch/enjyzly#readme",
+  "devDependencies": {
+    "prisma": "^7.10.0"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^18.0.6",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "passport-session": "^1.0.2",
+    "pg": "^8.23.1"
+  }
+}
